@@ -44,6 +44,6 @@ if ! pgrep -F "$ssh_pid_file" >/dev/null 2>&1; then
     ssh -f -i "$ssh_priv_key" -A  -p "$ssh_port" \
         -o BatchMode=no -o NoHostAuthenticationForLocalhost=yes \
         "root@127.0.0.1" \
-        'rm /ssh-agent/sock; socat UNIX-CONNECT:$SSH_AUTH_SOCK UNIX-LISTEN:/ssh-agent/sock,fork'
+        'socat UNIX-CONNECT:$SSH_AUTH_SOCK UNIX-LISTEN:/ssh-agent/sock,fork,unlink-leary,perm-early=0666'
     pgrep --exact --parent 1 --newest ssh > "$ssh_pid_file"
 fi
